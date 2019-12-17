@@ -1,0 +1,20 @@
+Questions Comments coming in: 
+We have figured out inter-device driver communication with regard to exporting symbols.
+Need a way to write to disk
+Currently looking at mounting the device as a swap disk -> Does he have any thoughts on how to execute the writes to disk?
+It is possible to remove a device driver for a device, install a new one for that type of device and have the new driver commincate with the hardware correctly?
+We have a working RAM disk, but modification is necessary.
+
+Answers/Comments:
+One idea is to become part of the swap device manager in the sense that we use the code of the swap device driver (which should be on the linux github) and work from there.
+This might also involve some diving into how page.h/c handles swapping, the hope here is that this code should still be available after the initial build of the kernel since
+this memory is used often.
+**Very important to verify that we do not get blocked from adding ourselves as a swap device ASAP.
+We can look into the code of lsblk to see how it comes up with list of installed block devices.
+We almost certainly do not want to write/edit device drivers for GPU, probably makes more sense to write some cuda that can be called/used from the user-level.
+
+
+Deliverables for next meeting (10/02/19):
+Ensure that we can add our device as a swap device.
+Figure out this writing to disk shenanigans.
+Dr.Butt will hopefully have a quick chat with Dr.Back about what we are doing and maybe this can help us out in some way.

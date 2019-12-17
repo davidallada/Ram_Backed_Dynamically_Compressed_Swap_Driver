@@ -1,0 +1,16 @@
+Questions/Comments coming:
+- Current we are installing the device driver as swap, but are not sure that the functions may be overriden since our printk statements are not coming through
+- Figured out how to access the request queue but have not done too much tinkering on that front
+- Have an idea about the high level gpu setup, still tring to figure out if we want to be simulating the gpu or actually use a pysical gpu
+- What is the most optimal way to run user level code from the kernel level?
+Answers/Comments:
+- One easy way to communicate with another device is to have both of them write to a /proc file and read from there
+- This is also an easy way to communicate with a user level code that can just be running and checking occasionally if there is something to be read in the file
+- Using sprinf should be suffient here (from the user level?)
+- Creating a user level application for the gpu code should be the easiest way -> allows the use of cuda more easily
+- Should probably mark pages as non-resident when the current page is being processed by the gpu compression process
+
+Deliverables for next class:
+- Start the cuda code portion
+- Figure out the /proc file writing
+- Check the swap device part

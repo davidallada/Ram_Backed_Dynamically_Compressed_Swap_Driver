@@ -1,0 +1,13 @@
+
+sudo rmmod ram.ko;
+sudo rmmod rle_simple_module.ko;
+sleep 2;
+make clean;
+sleep 2;
+make;
+sleep 2;
+sudo insmod rle_simple_module.ko 
+sleep 3;
+sudo insmod ram.ko rd_nr=1 rd_size=50000 max_part=1 part_compressed=25 low_water_param=50 high_water_param=99;
+sleep 4;
+dmesg;

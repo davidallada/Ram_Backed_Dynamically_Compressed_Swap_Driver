@@ -1,0 +1,29 @@
+Questions/Comments coming in:
+-> How does the page cache fit into our existing diagram, and how could we use pdflush to intercept pages of interest?
+-> How exactly does interception work, is this using the major and minor numbers?
+-> Does the eviction just call the dist and we can just intercept using the driver?
+-> How can we know if a page is being evicted from RAM or if it is a larger file being written to disk?
+-> Can we prioritize our disk by manipulating the swap space?
+Idea 1: Swap space priority shifts or disabling other swap devices
+Idea 2: Using pdflush and intercepting there when pages are flushed out
+
+Answers/Comments:
+Seems there are two types of pages that are in the cache and the way that different types of pages are chosen for eviction is controlled
+by page.h and page.c (which we do not want to touch).
+There are pages that can simply be read from a binary, in other words, pages that are not dirty. Dirty pages are evicted to the page cache
+and then evicted from there to the disk as a last resort. Since pages that can be read involve no write on eviction they are thrown off first.
+We will most likely be only working on those pages that are actually written to the disk since we do not want to mess with page.h
+Similarly things that are simply evicted by "freeing" the memory will not be backed up by a swap file and the swap version of the approach cannot catch
+those either.
+-> Look at /etc/fstab/ - > this seems to have useful information 
+We can set up our device as a "backed swap" -> **Might want to look more into what "backed swaps" are and how we can manipulate them to our advantage.
+We should look a bit into sclinux or at least how to disable it so that it does not get into our way.
+When we test, especially if we are on a machine that has a large amount of memory we will want a dummy program that simply locks memory away so that it 
+cannot be paged out. (mlock?)
+
+Deliverables for next class:
+A proposal with the following format:
+    1 Paragraph of why this project is important 
+    3-4 Bullets that detail a roadmap of the steps in the development of the project and how we would assign weights to each part of the assignment.
+
+Our self created assignments -> Get redirection to existing device drivers working.

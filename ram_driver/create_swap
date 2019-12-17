@@ -1,0 +1,29 @@
+#!/bin/bash
+echo "[+] Turning off swap"
+sudo swapoff -a
+echo "[+] Creating Swap partition for ram0 in fdisk"
+echo "n 
+
+
+
+
+
+
+w" | sudo fdisk /dev/ram0
+echo "[+] re-reading partition table"
+partprobe
+echo "[+] Checking /etc/fstab for existing swap"
+str1=`tail -n 1 /etc/fstab | grep '/dev/ram0p1'`
+str2="/dev/ram0p1 swap swap defaults,pri=3 0 0"
+echo $str1
+echo $str2
+if [ "$str1" == "$str2" ]; then
+    echo "[+] ram0p1 swap already in fstab"
+else
+    echo "[+] Adding ram0p1 swap to fstab"
+    sudo sh -c "echo $str2 >> /etc/fstab"
+fi
+sudo mkswap /dev/ram0p1
+sudo swapon -a
+
+

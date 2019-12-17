@@ -1,0 +1,23 @@
+Questions/Comments coming in:
+How to reference other devices and access their queues?
+What is the difference between registering a device with the kernel and mounting a filesystem on that device in fstab?
+
+Answers/Comments:
+-> It is not possible to simply "redirect" requests to the queue of another device in the sense that we need to create a new request
+     from scratch that is effectively a duplicate with different headers that are specific to the target device.
+-> Might not be a bad idea to "forget the user for now" and simply try to execute a random request to another disk in place of the user request
+    until we are certain that we can get the inter device driver communication working.
+-> Registration with the kernel is more of an "I exist" to the kernel but does not really do anything more than that. Once the device has been 
+    registered it is necessary to mount a file system on top of that and stick it into the file system table.
+-> Need to take care about the formatting of swap devices since our file system willl likely be one of swap.
+-> Also need to tell the kernel which file system we want it to use for swap -> This should allow us to be "the disk" of choice.
+-> Google inter-device-driver communication (seems easier said than done but w/e)
+-> Might also not be a bad idea to install a character device driver first since those are a bit less tricky than block ones
+-> Start off using a RAM disk (I think sbull already does this).
+-> Probably not a bad idea to implement these modules seperately (assuming they can communicate properly)
+
+
+Deliverables for next meeting (09/26/19):
+Think about the "Why" of the project and maybe add that to the writeup.
+Build the kernel
+Solid progress on inter device driver communication
